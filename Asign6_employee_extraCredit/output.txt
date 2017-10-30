@@ -1,0 +1,49 @@
++ 123: Employee{ID=123, last=MacDonald, first=Ron, salary=80000}
++ 100: Employee{ID=100, last=Brown, first=Bob, salary=150000}
+% 111: *** Invalid command ***
+? 111: *** ID not found ***
++ 222: Employee{ID=222, last=Kurtz, first=Karl, salary=175000}
+- 333: *** ID not found ***
++ 150: Employee{ID=150, last=Robins, first=Roberta, salary=200000}
++ 123: *** Duplicate ID ***
++ 110: Employee{ID=110, last=Brian, first=Bet, salary=15000}
+% 121: *** Invalid command ***
+? 121: *** ID not found ***
++ 232: Employee{ID=232, last=Kelly, first=Kellyl, salary=175000}
+- 343: *** ID not found ***
++ 160: Employee{ID=160, last=Roerts, first=Merry, salary=200000}
++ 133: Employee{ID=133, last=Brady, first=Hudda, salary=50000}
+- 110: Employee{ID=2, last=, first=, salary=6.95322e-310}
+? 110: *** ID not found ***
++ 185: Employee{ID=185, last=Andrea, first=Ashter, salary=125000}
+? 111: *** ID not found ***
++ 222: *** Duplicate ID ***
+- 333: *** ID not found ***
++ 150: *** Duplicate ID ***
++ 126: Employee{ID=126, last=Brenter, first=Holly, salary=50000}
++ 117: Employee{ID=117, last=Bobby, first=Barbara, salary=15000}
+% 125: *** Invalid command ***
+? 128: *** ID not found ***
++ 232: *** Duplicate ID ***
+- 343: *** ID not found ***
++ 160: *** Duplicate ID ***
++ 133: *** Duplicate ID ***
+
+All employees
+-------------
+Employee{ID=100, last=Brown, first=Bob, salary=150000}
+Employee{ID=117, last=Bobby, first=Barbara, salary=15000}
+Employee{ID=123, last=MacDonald, first=Ron, salary=80000}
+Employee{ID=126, last=Brenter, first=Holly, salary=50000}
+Employee{ID=133, last=Brady, first=Hudda, salary=50000}
+Employee{ID=150, last=Robins, first=Roberta, salary=200000}
+Employee{ID=160, last=Roerts, first=Merry, salary=200000}
+Employee{ID=185, last=Andrea, first=Ashter, salary=125000}
+Employee{ID=222, last=Kurtz, first=Karl, salary=175000}
+Employee{ID=232, last=Kelly, first=Kellyl, salary=175000}
+
+Statistics
+----------
+Minimum salary = $ 15000.00
+Maximum salary = $200000.00
+Average salary = $122000.00
