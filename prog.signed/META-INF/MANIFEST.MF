@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Created-By: 1.8.0_121 (Oracle Corporation)
+
+Name: codecheck.log
+SHA-256-Digest: Ox/hUH8GkdMJWTA2G7f2J0iRj5w9Mitx+mki23ROt04=
+
+Name: report.html
+SHA-256-Digest: FGEEQk5ZRC1jJTl/pxk2hZ4bV8GM/Mxno4EPp5Jh1HM=
+
+Name: scoreCallback
+SHA-256-Digest: Q/jgNdSi8thT+hK9dV2/XWiv5SyOowm2dqjCS+xZCiY=
+
+Name: codecheck.out
+SHA-256-Digest: 47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=
+
+Name: prog.cpp
+SHA-256-Digest: 2mP+bLUMBmNrrdAeioUxSSh8cpkfKcYjADlBNoUnZPY=
+

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta name="Submission" content="submission"/>
+<meta name="Problem" content="w1-1"/>
+<meta name="Level" content="1"/>
+<meta name="Time" content="2017-01-31T09:31:49Z"/>
+<meta name="ID" content="prog"/>
+<meta name="Elapsed" content="1585 ms"/>
+<style type="text/css">
+.header {font-weight: bold; font-size: 1.2em; }
+.item {font-weight: bold;}
+.pass {color: green;}
+.fail {color: red;}
+table.file td {padding-right: 1em; background: #FFF; }
+.linenumber {color: gray;}
+.footnote {font-size: 0.7em;}
+table {font-size: 0.9em;}
+td, th { background: #EEE; margin: 0.5em; padding: 0.25em;}
+table.output td {vertical-align: top;}
+div.footnotes { border-top: 1px solid gray; padding-top: 0.5em; }
+</style>
+<title>Report</title>
+</head>
+<body>
+<p class="header run">Testing prog.cpp</p>
+<div class="run">
+<p class="item">Test 1</p>
+<p class="caption">Input:</p>
+<pre class="output">1 2 3 4 5 0
+</pre>
+<pre class="output">Average: 3
+</pre>
+<span class="pass">pass </span><p class="item">Test 2</p>
+<p class="caption">Input:</p>
+<pre class="output">2 4 3 0
+</pre>
+<pre class="output">Average: 2.5
+</pre>
+<span class="pass">pass </span><p class="item">Test 3</p>
+<p class="caption">Input:</p>
+<pre class="output">7 2 0
+</pre>
+<pre class="output">Average: 4.5
+</pre>
+<span class="pass">pass </span><p class="item">Test 4</p>
+<p class="caption">Input:</p>
+<pre class="output">11 0
+</pre>
+<pre class="output">Average: 11
+</pre>
+<span class="pass">pass </span><p class="item">Test 5</p>
+<p class="caption">Input:</p>
+<pre class="output">0
+</pre>
+<pre class="output">Average: 0
+</pre>
+<span class="pass">pass </span></div>
+<p class="header studentFiles">Student files</p>
+<div class="studentFiles">
+<p class="caption">prog.cpp:</p>
+<pre>/*
+  Read a sequence of integers from cin that is terminated by
+  a zero (which is not a part of the sequence). Print out the
+  average of the first and last value of the sequence.
+  If there is only one value, print it. If there are none, print 0.
+  Do not use an array or vector.
+*/
+#include &lt;iostream&gt;
+using namespace std;
+
+  int main()
+  {
+  int first(0), last(0), input(-1);
+  double average(0);
+
+  while (input !=0)
+  {
+      cin &gt;&gt; input;
+      if (first == 0) //first value will not be initialized
+      {
+          first = input;
+      }
+      else
+      {
+          if (input !=0) // store every other value to track last value
+          last = input;
+      }
+
+    }
+    if (first == 0)
+    {
+        cout &lt;&lt; "Average: 0\n"; // output if there is no input
+    }
+    else if (last == 0)
+    {
+        cout &lt;&lt; "Average: " &lt;&lt; first &lt;&lt; endl; // output if there is only one input
+    }
+    else
+    {
+       average = ((double)first + (double)last)/2; // output if there are more than one input
+       cout &lt;&lt; "Average: " &lt;&lt; average &lt;&lt; endl;
+    }
+    return 0;
+  }
+
+
+</pre>
+</div>
+<p class="header score">Score</p>
+<div class="score">
+<p class="score">5/5</p>
+</div>
+</body></html>

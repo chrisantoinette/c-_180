@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta name="Version" content="0.3"/>
+<meta name="Submission" content="/tmp/codecheck/17030219124453640971372305697"/>
+<meta name="Problem" content="1702260825220u8j2cpge3ta85qrylrbkn9"/>
+<meta name="Level" content="1"/>
+<meta name="Time" content="2017-03-02T19:12:53Z"/>
+<meta name="ID" content="rational"/>
+<meta name="User" content="17020909352ojtr1n5504ulvduok4n05l75"/>
+<meta name="Elapsed" content="1217 ms"/>
+<style type="text/css">
+.header {font-weight: bold; font-size: 1.2em; }
+.item {font-weight: bold;}
+.pass {color: green;}
+.fail {color: red;}
+table.file td {padding-right: 1em; background: #FFF; }
+.linenumber {color: gray;}
+.footnote {font-size: 0.7em;}
+table {font-size: 0.9em;}
+td, th { background: #EEE; margin: 0.5em; padding: 0.25em;}
+table.output td {vertical-align: top;}
+div.footnotes { border-top: 1px solid gray; padding-top: 0.5em; }
+</style>
+<title>Report</title>
+</head>
+<body>
+<p class="header run">Testing rational.cpp</p>
+<pre class="output">(3/4) + 3(1/2) = 4(1/4)
+4(2/3) + 5(3/4) = 10(5/12)
+0 + 7(1/2) = 7(1/2)
+(3/4) - (1/2) = (1/4)
+6 - 3(22/25) = 2(3/25)
+10(5/12) - 4(2/3) = 5(3/4)
+10(5/12) - 5(3/4) = 4(2/3)
+7 - 3 = 4
+7 - 7 = 0
+8(3/4) * (1/2) = 4(3/8)
+4(3/8) * 1 = 4(3/8)
+8(3/4) * 3 = 26(1/4)
+8(3/4) / (1/2) = 17(1/2)
+8(3/4) / 1 = 8(3/4)
+13 / 0 = 0
+
+Done!
+</pre>
+<span class="pass">pass </span><p class="header studentFiles">Student files</p>
+<p class="caption">rational.cpp:</p>
+<pre>#include&lt;iostream&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;string&gt;
+#include&lt;fstream&gt;
+#include&lt;cstdlib&gt;
+#include&lt;climits&gt;
+
+using namespace std;
+
+const string INPUT_FILE_NAME = "rational.in";
+//global functions
+//declare class so that return objects for evaluate can be identified
+class rational;
+//utility used to extract digits
+int extract_digit(istream&amp; ins);
+//evaluate each line, returns another rational object
+rational evaluate(rational&amp; r1,rational&amp; r2,const char op);
+//wrapper to evaluate;
+void do_problem(rational&amp; r1, rational&amp; r2, const char op);
+
+/*class name : Rational
+ * Description : Performs basic arithmetic operations on two given rational numbers
+ * input :2 rational numbers in the format specified
+ * output : Rational number in the reduced form , mixed or proper fractions
+ * private variables: The numerator and denominator of the rational number is private
+ * public methods : All the operation methods are friend functions, so that they have the access
+ *                  to the numerator and denominator to perform the necessary operations*/
+ class rational
+ {
+ public:
+
+	 rational();
+	 rational(int x);
+	 rational(int x, int y);
+	 void set_numerator(int x);
+	 void set_denominator(int y);
+	 int get_numerator();
+	 int get_denominator();
+	 bool check_zero() const;
+
+	 friend rational operator+(const rational&amp; r1, const rational&amp; r2);
+	 friend rational operator-(const rational&amp; r1, const rational&amp; r2);
+	 friend rational operator*(const rational&amp; r1, const rational&amp; r2);
+	 friend rational operator/(const rational&amp; r1, const rational&amp; r2);
+	 friend ostream&amp; operator &lt;&lt;(ostream&amp; outs, rational&amp; r);
+	 friend istream&amp; operator &gt;&gt;(istream&amp; ins, rational&amp; r);
+
+
+ private:
+	 int numerator;
+	 int denominator;
+	 void GCD();
+ };
+
+ /* Method name : Check_zero
+  * Purpose : To check if the numerator or the denominator of the rational number is zero
+  * Parameters : The Rational number for which the check should be made
+  * Returns : True if either the numerator or the denominator of the rational number is zero
+  * */
+ bool rational::check_zero() const
+   {
+ 	 bool is_zero = false;
+ 	 if (!numerator || !denominator)
+ 	 {
+ 		 is_zero = true;
+ 	 }
+ 	 return is_zero;
+   }
+
+ /* Method name :set_numerator
+  * Purpose : Setter function that set the value of the numerator
+  * Parameters : the numerator value
+  * Returns : does not return any value
+  * */
+void rational::set_numerator(int x)
+{
+	numerator = x;
+}
+
+/* Method name :set_denominrator
+ * Purpose : Setter function that set the value of the denominator
+ * Parameters : the denominator value
+ * Returns : does not return any value
+ * */
+void rational::set_denominator(int y)
+{
+	denominator = y;
+}
+
+/* Method name :get_numerator
+ * Purpose : Getter function that gets the value of the numerator
+ * Parameters :no parameters
+ * Returns : The value of numerator
+ * */
+int rational::get_numerator()
+{
+	return numerator;
+}
+/* Method name :get_denominator
+ * Purpose : Getter function that gets the value of the denominator
+ * Parameters :no parameters
+ * Returns : The value of denominator
+ * */
+int rational::get_denominator()
+{
+	return denominator;
+}
+/* Construtor name :rational
+  * Purpose : default constructor that creates a rational number for 0
+  * */
+ rational::rational()
+ {
+	 numerator = 0;
+	 denominator = 0;
+ }
+ /* Construtor name :rational
+   * Purpose : constructor with 2 input param
+   * */
+ rational::rational(int x, int y)
+ {
+	 numerator = x;
+	 denominator = y;
+ }
+ /* Construtor name :rational
+   * Purpose : constructor with input a and initializes b to 1
+   * */
+ rational::rational(int x)
+ {
+	 numerator = x;
+	 denominator = 1;
+ }
+ /* Method name :GCD
+   * Purpose : Reduces the rational number  to the reduced form
+   *           using Euclid’s GCD algorithm
+   * Parameters : -
+   * Returns : -
+   * */
+void rational::GCD()
+ {
+	int big = 0, small = 0, r = INT_MAX, gcd = 0;
+ 	if (numerator &gt; denominator) {big = numerator; small = denominator;}
+ 	else { small = numerator; big = denominator; }
+ 	if (!big || !small)
+ 	{
+ 		numerator = 0;
+ 		denominator = 0;
+ 		return;
+ 	}
+ 	while (r &gt; 1)
+ 	{
+ 		r = big % small;
+ 		big = small;
+ 		small = r;
+ 	}
+ 	if ( r == 0 )
+ 	{
+		gcd = big;
+		numerator = numerator/gcd;
+		denominator = denominator/gcd;
+ 	}
+ }
+/* Operator  : &gt;&gt;
+  * Purpose : overloads the &gt;&gt; operator to get the inputs
+  * Parameters : istream object and Rational number to be input
+  * Returns :  istream object
+  * */
+istream&amp; operator&gt;&gt;(istream&amp; ins, rational&amp; r)
+{
+	ins &gt;&gt; ws;  // eat up any leading whitespaces
+
+	int whole = -1, numerator = 0, denominator = 1;
+	if(isdigit(ins.peek()))
+	{
+		whole = extract_digit(ins);
+		//cout &lt;&lt; "whole: " &lt;&lt; whole &lt;&lt; endl;
+	}
+	ins &gt;&gt; ws;
+	if(ins.peek() == '(') {ins.get();}
+	ins &gt;&gt; ws;
+	if(isdigit(ins.peek()))
+	{
+		numerator = extract_digit(ins);
+	}
+	ins &gt;&gt; ws;
+	if (numerator == 0 &amp;&amp; whole &gt; 0)
+	{
+		//special condition where we have whole numbers only
+		//and we dont have zeroes in numerator
+		r.numerator = whole;
+		r.denominator = 1;
+		ins &gt;&gt; ws;
+		//check if we have reached the end;
+		if(ins.peek() == '=') {ins.get();}ins &gt;&gt; ws;
+		return ins;
+
+	}
+	if (ins.peek() == '/')
+	{
+		ins.get();
+		denominator = extract_digit(ins);
+	}
+	ins &gt;&gt; ws;
+	if(ins.peek() == ')') {ins.get();}ins &gt;&gt; ws;
+	if(ins.peek() == '=') {ins.get();}ins &gt;&gt; ws;
+	//cout &lt;&lt; "are we reaching?" &lt;&lt; ins.peek() &lt;&lt; endl;
+	if ( whole &gt; 0 &amp;&amp; numerator != 0)
+	{
+		numerator = (denominator * whole) + numerator;
+	}
+	else if( whole == 0 )
+	{
+		numerator = 0;
+		denominator = 0;
+	}
+	else if( whole &gt; 0 &amp;&amp; numerator == 0 )
+	{
+		numerator = whole;
+	}
+	r.numerator = numerator;
+	r.denominator = denominator;
+
+	return ins;
+}
+/* Operator  : &lt;&lt;
+  * Purpose : overloads the &lt;&lt; operator to display the output values
+  * Parameters : ostream object and Rational number to be input
+  * Returns :  ostream object
+  * */
+ostream&amp; operator&lt;&lt;(ostream&amp; outs, rational&amp; r)
+{
+	 int rem = 0 , d = 0;
+	 if(r.denominator == 1)
+	 {
+		 outs &lt;&lt; r.numerator;
+		 return outs;
+	 }
+
+	 r.GCD();
+	 if (r.numerator == 0 &amp;&amp; r.denominator == 0)
+	 {
+		 r.numerator = 0;
+		 outs &lt;&lt; r.numerator;
+		 return outs;
+	 }
+	 if ( r.denominator == 1)
+	 {
+		 outs &lt;&lt; r.numerator;
+		 return outs;
+	 }
+	 if (r.numerator &gt; r.denominator) // improper fraction to mixed number
+	 {
+		 d = r.numerator / r.denominator;
+		 rem = r.numerator % r.denominator;
+		 outs &lt;&lt; d &lt;&lt; "(" &lt;&lt; rem &lt;&lt; "/" &lt;&lt; r.denominator &lt;&lt; ")";
+	 }
+	 else
+	 {
+		 outs &lt;&lt; "(" &lt;&lt; r.numerator &lt;&lt; "/" &lt;&lt; r.denominator &lt;&lt; ")";
+	 }
+	 return outs;
+}
+/* Operator  : +
+  * Purpose : overloads the + operator to perform addition on 2 objects
+  * Parameters : 2 Rational numbers on which the addition is to be made
+  * Returns :  resultant rational object
+  * */
+ rational operator+(const rational&amp; r1, const rational&amp; r2)
+ {
+	 rational newobj;
+	 if (r1.check_zero())
+	 {
+		 newobj.numerator = r2.numerator;
+		 newobj.denominator = r2.denominator;
+	 }
+	 else if (r2.check_zero())
+	 {
+		 newobj.numerator = r1.numerator;
+		 newobj.denominator = r1.denominator;
+	 }
+
+	 else
+	 {
+		 newobj.numerator = (r1.numerator * r2.denominator) + (r1.denominator * r2.numerator);
+		 newobj.denominator = (r1.denominator * r2.denominator);
+	 }
+	 return newobj;
+ }
+ /* Operator  : -
+   * Purpose : overloads the - operator to perform subtraction
+   * Parameters : 2 Rational numbers on which the subtraction is to be made
+   * Returns :  resultant rational object
+   * */
+ rational operator-(const rational&amp; r1, const rational&amp; r2)
+ {
+	 rational newobj;
+	 newobj.numerator = (r1.numerator * r2.denominator) - (r1.denominator * r2.numerator);
+	 newobj.denominator = (r1.denominator * r2.denominator);
+	 return newobj;
+
+ }
+ /* Operator  : *
+    * Purpose : overloads the * operator to perform multiplication on 2 objects
+    * Parameters : 2 Rational numbers on which the multiplication is to be made
+    * Returns :  resultant rational object
+    * */
+ rational operator*(const rational&amp; r1, const rational&amp; r2)
+ {
+	 rational newobj;
+	 if (r1.check_zero() || r2.check_zero())
+	 {
+		 newobj.numerator = 0;
+		 newobj.denominator = 0;
+	 }
+	 else
+	 {
+		 newobj.numerator = (r1.numerator * r2.numerator);
+		 newobj.denominator = (r1.denominator * r2.denominator);
+	 }
+	 return newobj;
+
+ }
+ /* Operator  : /
+    * Purpose : overloads the / operator to perform division
+    * Parameters : 2 Rational numbers on which the division is to be made
+    * Returns :  resultant rational object
+    * */
+ rational operator/(const rational&amp; r1, const rational&amp; r2)
+ {
+	 rational newobj;
+	 if (r1.check_zero() || r2.check_zero())
+	 {
+		 newobj.numerator = 0;
+		 newobj.denominator = 0;
+	 }
+	 else
+	 {
+		 newobj.numerator = (r1.numerator * r2.denominator);
+		 newobj.denominator = (r1.denominator * r2.numerator);
+	 }
+	 return newobj;
+ }
+// main function
+ int main()
+ {
+     // Open the input file.
+     ifstream input;
+     input.open(INPUT_FILE_NAME);
+     if (input.fail())
+     {
+         cout &lt;&lt; "Failed to open " &lt;&lt; INPUT_FILE_NAME &lt;&lt; endl;
+         return -1;
+     }
+
+     rational r1, r2;
+     char op;
+     do    // Read the file till the end of the file is reached
+     {
+		 input &gt;&gt; r1 &gt;&gt; op &gt;&gt; r2;
+		 do_problem(r1, r2, op);
+     }while (!input.eof());
+
+     cout &lt;&lt; endl &lt;&lt; "Done!" &lt;&lt; endl;
+     return 0;
+ }
+
+ /****************************************************************/
+ /* Method name : evaluate
+   * Purpose : Calls the methods to perform the arithmetic operations
+   *           based on the operator given
+   * Parameters : 2 rational numbers and the operator
+   * Returns : Final value of the operations
+   * */
+ rational evaluate (rational&amp; r1,rational&amp; r2, const char op)
+  {
+ 	 rational final_value;
+ 	 switch (op)
+ 	 {
+ 	  case '+':
+ 		  final_value = r1 + r2;
+ 		  break;
+ 	  case '-':
+ 		  final_value = r1 - r2;
+ 		  break;
+ 	  case '*':
+ 		  final_value = r1 * r2;
+ 		  break;
+ 	  case '/':
+ 		  final_value = r1 / r2;
+ 		  break;
+ 	  default:
+ 		  cout &lt;&lt; "invalid numbers\n" &lt;&lt; endl;
+ 	 }
+ 	 return final_value;
+  }
+ /****************************************************************/
+ /* Method name :do_problem
+   * Purpose : calls the evaluate method and places the final value in he result
+   *           outputs the result in the reduced form
+   * Parameters :  2 rational numbers and the operator
+   * Returns : -
+   * */
+  void do_problem(rational&amp; r1,rational&amp; r2, const char op)
+  {
+      rational result = evaluate(r1, r2, op);
+      cout &lt;&lt; r1 &lt;&lt; " " &lt;&lt; op &lt;&lt; " " &lt;&lt; r2 &lt;&lt; " = " &lt;&lt; result &lt;&lt; endl;
+
+  }
+  /****************************************************************/
+  /* Method name :extract_digit
+    * Purpose : gets the digits from the input file
+    * Parameters : object from which he input is got, here its a file
+    * Returns : Integer value
+    * */
+ int extract_digit(istream&amp; ins)
+ {
+ 	int ret = 0;
+ 	try
+ 	{
+ 		string digit;
+
+ 		while(isdigit(ins.peek()))
+ 		{
+ 			char c = ins.get();
+ 			digit = digit + c;
+ 		}
+ 		ret = stoi(digit);
+ 	}
+ 	catch(exception&amp; e)
+ 	{
+ 		ret = 0;
+ 		cout &lt;&lt; "exception:" &lt;&lt; e.what() &lt;&lt; endl;
+ 	}
+
+ 	return ret;
+ }
+
+
+</pre>
+<p class="header providedFiles">Provided files</p>
+<p class="caption">rational.in:</p>
+<pre>(3/4) + 3(1/2) =
+4(2/3) + 5(3/4) =
+0 + 7(3/6) =
+(3/4) - (1/2) =
+6 - 3 (22/25) =
+10(5/12) - 4(2/3) =
+10(5/12) - (23/4) =
+7-3=
+(7/1) - (84/12) =
+8(3/4) * (1/2) =
+(35/8) * (5/5) =
+8(12/16) * 3 =
+8(15/20) / (12/24) =
+8(75/100) / (88/88) =
+13 / (0/17) =
+</pre>
+<p class="header score">Score</p>
+<p class="score">1/1</p>
+<p class="download"><a href="rational.signed.zip">Download</a></p>
+<div class="footnotes"><div class="footnote">2017-03-02T19:12:53Z</div>
+</div>
+</body></html>

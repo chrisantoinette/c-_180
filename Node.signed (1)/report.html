@@ -1,0 +1,976 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta name="Version" content="0.3"/>
+<meta name="Submission" content="/tmp/codecheck/17040608098892411721046962949"/>
+<meta name="Problem" content="170331011480b8q7f7um95ljijree39yvzn"/>
+<meta name="Level" content="1"/>
+<meta name="Time" content="2017-04-06T08:09:58Z"/>
+<meta name="ID" content="Node"/>
+<meta name="User" content="17020909352ojtr1n5504ulvduok4n05l75"/>
+<meta name="Elapsed" content="7185 ms"/>
+<style type="text/css">
+.header {font-weight: bold; font-size: 1.2em; }
+.item {font-weight: bold;}
+.pass {color: green;}
+.fail {color: red;}
+table.file td {padding-right: 1em; background: #FFF; }
+.linenumber {color: gray;}
+.footnote {font-size: 0.7em;}
+table {font-size: 0.9em;}
+td, th { background: #EEE; margin: 0.5em; padding: 0.25em;}
+table.output td {vertical-align: top;}
+div.footnotes { border-top: 1px solid gray; padding-top: 0.5em; }
+</style>
+<title>Report</title>
+</head>
+<body>
+<p class="header run">Testing STLVectorList.cpp</p>
+<pre class="output">=======
+Prepend
+=======
+          |---------------Vector-------------|   |-----------------List-------------|
+   Size        Time  Creates   Copies Destroys        Time  Creates   Copies Destroys
+    100        0 ms      100      227      227        0 ms      100      100      100
+    500        0 ms      500    1,011    1,011        0 ms      500      500      500
+  1,000        0 ms    1,000    2,023    2,023        0 ms    1,000    1,000    1,000
+  5,000        0 ms    5,000   13,191   13,191        0 ms    5,000    5,000    5,000
+ 10,000        0 ms   10,000   26,383   26,383        1 ms   10,000   10,000   10,000
+
+======
+Append
+======
+          |---------------Vector-------------|   |-----------------List-------------|
+   Size        Time  Creates   Copies Destroys        Time  Creates   Copies Destroys
+    100        0 ms      100      227      227        0 ms      100      100      100
+    500        0 ms      500    1,011    1,011        0 ms      500      500      500
+  1,000        0 ms    1,000    2,023    2,023        0 ms    1,000    1,000    1,000
+  5,000        0 ms    5,000   13,191   13,191        0 ms    5,000    5,000    5,000
+ 10,000        0 ms   10,000   26,383   26,383        0 ms   10,000   10,000   10,000
+
+===
+Get
+===
+          |---------------Vector-------------|   |-----------------List-------------|
+   Size        Time  Creates   Copies Destroys        Time  Creates   Copies Destroys
+    100        0 ms        0   10,000   10,000        9 ms        0   10,000   10,000
+    500        0 ms        0   10,000   10,000       41 ms        0   10,000   10,000
+  1,000        0 ms        0   10,000   10,000       80 ms        0   10,000   10,000
+  5,000        0 ms        0   10,000   10,000      392 ms        0   10,000   10,000
+ 10,000        1 ms        0   10,000   10,000      803 ms        0   10,000   10,000
+
+======
+Remove
+======
+          |---------------Vector-------------|   |-----------------List-------------|
+   Size        Time  Creates   Copies Destroys        Time  Creates   Copies Destroys
+    100        0 ms        0        0      100        0 ms        0        0      100
+    500        0 ms        0        0      500        0 ms        0        0      500
+  1,000        1 ms        0        0    1,000        3 ms        0        0    1,000
+  5,000       41 ms        0        0    5,000       77 ms        0        0    5,000
+ 10,000      160 ms        0        0   10,000      315 ms        0        0   10,000
+
+======
+Insert
+======
+          |---------------Vector-------------|   |-----------------List-------------|
+   Size        Time  Creates   Copies Destroys        Time  Creates   Copies Destroys
+    100        0 ms      100      407      407        0 ms      100      100      100
+    500        1 ms      500    1,981    1,981        1 ms      500      500      500
+  1,000        7 ms    1,000    3,987    3,987        4 ms    1,000    1,000    1,000
+  5,000      175 ms    5,000   23,151   23,151      104 ms    5,000    5,000    5,000
+ 10,000      700 ms   10,000   46,349   46,349      497 ms   10,000   10,000   10,000
+
+Done! Total time: 3.43724 seconds
+</pre>
+<p class="header studentFiles">Student files</p>
+<p class="caption">Node.cpp:</p>
+<pre>#include &lt;iostream&gt;
+#include "Node.h"
+
+using namespace std;
+
+// Static member variables, which are global to the class.
+// These variables exist independently from any Node objects.
+long Node::constructor_count;
+long Node::copy_count;
+long Node::destructor_count;
+
+/***** Complete this file. *****/
+//ctor
+Node::Node()
+{
+	Node::constructor_count++;
+}
+Node::Node(const Node&amp; other)
+{
+	m_value = other.m_value;
+	Node::copy_count++;
+}
+
+Node::Node(const long the_value)
+{
+	m_value = the_value;
+	Node::constructor_count++;
+}
+
+//dtor
+Node::~Node()
+{
+	Node::destructor_count++;
+}
+//getter
+long Node::get_value() const
+{
+	return m_value;
+}
+long Node::get_constructor_count()
+{
+	return Node::constructor_count;
+}
+long Node::get_copy_count()
+{
+	return Node::copy_count;
+}
+long Node::get_destructor_count()
+{
+	return Node::destructor_count;
+}
+bool Node::operator &lt;(const Node &amp; other_obj) const
+{
+	return this-&gt;m_value &lt; other_obj.m_value;
+}
+
+bool Node::operator &gt;(const Node &amp; other_obj) const
+{
+	return this-&gt;m_value &gt; other_obj.m_value;
+}
+bool Node::operator &gt;=(const Node &amp; other_obj) const
+{
+	return this-&gt;m_value &gt;= other_obj.m_value;
+}
+
+
+void Node::set_value(const long  the_value)
+{
+	m_value = the_value;
+}
+
+bool Node::operator ==(const Node &amp; other_node) const
+{
+	return m_value == other_node.m_value;
+}
+
+void Node::reset()
+{
+	Node::copy_count = 0;
+	Node::destructor_count = 0;
+	Node::constructor_count = 0;
+}
+</pre>
+<p class="caption">Node.h:</p>
+<pre>#ifndef NODE_H_
+#define NODE_H_
+
+/**
+ * A node for the sorted vector and sorted linked list.
+ */
+class Node
+{
+public:
+	Node();
+    Node(const long the_value);
+    Node(const Node&amp; other);
+    virtual ~Node();
+
+    long get_value() const;
+    void set_value(const long the_value);
+
+    bool operator&gt;(const Node&amp;) const;
+    bool operator&lt;(const Node&amp;) const;
+    bool operator==(const Node&amp;) const;
+    bool operator &gt;=(const Node &amp; other_obj) const;
+    // Access and reset the values of the static member variables.
+    static long get_constructor_count();
+    static long get_copy_count();
+    static long get_destructor_count();
+    static void reset();
+
+private:
+    long m_value;
+
+    // Static member variables, which are global to the class.
+    // These variables exist independently from any Node objects.
+    static long constructor_count;
+    static long copy_count;
+    static long destructor_count;
+};
+
+#endif /* NODE_H_ */
+
+</pre>
+<p class="caption">SortedList.cpp:</p>
+<pre>#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include "SortedList.h"
+
+using namespace std;
+
+/**
+ * Defaut constructor.
+ * Reset the global Node counters.
+ */
+SortedList::SortedList()
+{
+    Node::reset();
+}
+
+/**
+ * Destructor.
+ * Reset the global Node counters.
+ */
+SortedList::~SortedList()
+{
+    Node::reset();
+}
+
+/**
+ * @return the size of the data list.
+ */
+int SortedList::size() const { return data.size(); }
+
+/**
+ * Check that the data is sorted.
+ * @return true if sorted, false if not.
+ */
+bool SortedList::check()
+{
+    if (data.size() == 0) return true;
+
+    list&lt;Node&gt;::iterator it = data.begin();
+    list&lt;Node&gt;::iterator prev = it;
+
+    it++;
+
+    // Ensure that each node is greater than the previous node.
+    while ((it != data.end()) &amp;&amp; (*it &gt;= *prev))
+    {
+        prev = it;
+        it++;
+    }
+
+    return it == data.end();  // Good if reached the end.
+}
+
+/**
+ * Insert a new node at the beginning of the data list.
+ * @param value the new node's value.
+ */
+void SortedList::prepend(const long value)
+{
+    /***** Complete this function. *****/
+	data.push_back(Node(value));
+}
+
+/**
+ * Append a new node at the end of the data list.
+ * @param value the new node's value.
+ */
+void SortedList::append(const long value)
+{
+    /***** Complete this function. *****/
+	data.push_back(Node(value));
+}
+
+/**
+ * Remove a node.
+ * @param index the index of the node to remove.
+ */
+void SortedList::remove(const int index)
+{
+    /***** Complete this function. *****/
+	list&lt;Node&gt;::iterator it = data.begin();
+	for(int i =0; i&lt; index &amp;&amp; it != data.end(); i++)
+	{
+		it++;
+	}
+	if(it!= data.end())
+	data.erase(it);
+}
+
+/**
+ * Insert a new node into the data list at the
+ * appropriate position to keep the list sorted.
+ */
+void SortedList::insert(const long value)
+{
+    /***** Complete this function. *****/
+	Node cur_node(value);
+		if (data.empty())
+		{
+			data.push_back(cur_node);
+			return;
+		}
+		list&lt;Node&gt;::iterator it; //iterator for the node class
+		it = data.begin(); //iterator for the data , present instant
+		while(it!= data.end() &amp;&amp; cur_node &gt; *it)
+		{
+			it++;
+		}
+		if(it == data.end())
+		{
+			data.push_back(cur_node);
+		}
+		else
+		{
+			data.insert(it, cur_node);
+		}
+}
+
+/**
+ * Return the data node at the indexed position.
+ * @param the index of the node.
+ * @return a copy of the data node.
+ */
+Node SortedList::at(const int index)
+{
+    /***** Complete this function. *****/
+	//Node n;
+	if (index &lt; data.size()/2)
+	{
+		list&lt;Node&gt;::iterator it = data.begin();
+		for(int i =0; i&lt; index &amp;&amp; it!= data.end(); i++)
+		{
+			it++;
+		}
+		if (it!= data.end())
+			return *it;
+	}
+	else
+	{
+		list&lt;Node&gt;::reverse_iterator itr = data.rbegin();
+		for(int i =0; i &lt; (data.size()-index-1) &amp;&amp; itr!= data.rend(); i++)
+		{
+			itr++;
+		}
+		if (itr!= data.rend())
+			return *itr;
+	}
+
+}
+
+
+</pre>
+<p class="caption">SortedList.h:</p>
+<pre>#ifndef SORTEDLIST_H_
+#define SORTEDLIST_H_
+
+#include &lt;list&gt;
+#include &lt;iterator&gt;
+#include "Node.h"
+
+using namespace std;
+
+/***** Modify this file if necessary. *****/
+
+/**
+ * A sorted linked list of Node objects.
+ */
+class SortedList
+{
+public:
+    SortedList();
+    virtual ~SortedList();
+
+    int size() const;
+    bool check();
+
+    void prepend(const long value);
+    void append(const long value);
+    void remove(const int index);
+    void insert(const long value);
+    Node at(const int index);
+
+private:
+    list&lt;Node&gt; data;
+};
+
+#endif /* SORTEDLIST_H_ */
+
+
+</pre>
+<p class="caption">SortedVector.cpp:</p>
+<pre>#include &lt;iostream&gt;
+#include &lt;iterator&gt;
+#include "SortedVector.h"
+
+using namespace std;
+
+/**
+ * Defaut constructor.
+ * Reset the global Node counters.
+ */
+SortedVector::SortedVector()
+{
+    Node::reset();
+}
+
+/**
+ * Destructor.
+ * Reset the global Node counters.
+ */
+SortedVector::~SortedVector()
+{
+    Node::reset();
+}
+
+/**
+ * @return the size of the data vector.
+ */
+int SortedVector::size() const { return data.size(); }
+
+/**
+ * Check that the data is sorted.
+ * @return true if sorted, false if not.
+ */
+bool SortedVector::check() const
+{
+    if (data.size() == 0) return true;
+
+    vector&lt;Node&gt;::const_iterator it = data.begin();
+    vector&lt;Node&gt;::const_iterator prev = data.begin();
+    it++;
+    // Ensure that each node is greater than the previous node.
+    while ((it != data.end()) &amp;&amp; (*it &gt;= *prev))
+    {
+        prev = it;
+        it++;
+    }
+
+    return it == data.end();  // Good if reached the end.
+}
+
+/**
+ * Insert a new node at the beginning of the data vector.
+ * @param value the new node's value.
+ */
+void SortedVector::prepend(const long value)
+{
+	data.push_back(Node(value));
+	/*vector&lt;Node&gt;::const_iterator it = data.begin();
+	 data.insert(it, Node(value));
+	 cout  &lt;&lt; value &lt;&lt; " ";*/
+
+}
+
+/**
+ * Append a new node at the end of the data vector.
+ * @param value the new node's value.
+ */
+void SortedVector::append(const long value)
+{
+	data.push_back(Node(value));
+}
+
+/**
+ * Remove a node.
+ * @param index the index of the node to remove.
+ */
+void SortedVector::remove(const int index)
+{
+	if(index &gt;= 0 &amp;&amp; index &lt; data.size())
+	{
+		vector&lt;Node&gt;::iterator it = data.begin();
+		data.erase(it+index);
+	}
+}
+
+/**
+ * Insert a new node into the data vector at the
+ * appropriate position to keep the vector sorted.
+ */
+void SortedVector::insert(const long value)
+{
+	Node cur_node(value);
+	if (data.empty())
+	{
+		data.push_back(cur_node);
+		return;
+	}
+	vector&lt;Node&gt;::iterator it; //iterator for the node class
+	it = data.begin(); //iterator for the data , present instant
+	while(it!= data.end() &amp;&amp; cur_node &gt; *it)
+	{
+		it++;
+	}
+	if(it == data.end())
+	{
+		data.push_back(cur_node);
+	}
+	else
+	{
+		data.insert(it, cur_node);
+	}
+}
+
+/**
+ * Return the data node at the indexed position.
+ * @param the index of the node.
+ * @return a copy of the data node.
+ */
+Node SortedVector::at(const int index) const
+{
+    /***** Complete this function. *****/
+	//Node n;
+	if( index &gt;= 0 &amp;&amp; index &lt; data.size())
+	{
+		return data[index];
+	}
+	//return n;
+}
+
+</pre>
+<p class="caption">SortedVector.h:</p>
+<pre>#ifndef SORTEDVECTOR_H_
+#define SORTEDVECTOR_H_
+
+#include &lt;vector&gt;
+#include &lt;iterator&gt;
+#include "Node.h"
+
+using namespace std;
+
+/***** Modify this file if necessary. *****/
+
+/**
+ * A sorted vector of Node objects.
+ */
+class SortedVector
+{
+public:
+    SortedVector();
+    virtual ~SortedVector();
+
+    int size() const;
+    bool check() const;
+
+    void prepend(const long value);
+    void append(const long value);
+    void remove(const int index);
+    void insert(const long value);
+    Node at(const int index) const;
+
+private:
+    vector&lt;Node&gt; data;
+};
+
+#endif /* SORTEDVECTOR_H_ */
+</pre>
+<p class="caption">TestSuite.cpp:</p>
+<pre>#include &lt;string&gt;
+#include &lt;ctime&gt;
+#include &lt;chrono&gt;
+#include &lt;stdlib.h&gt;
+#include "SortedVector.h"
+#include "SortedList.h"
+#include "Node.h"
+#include&lt;iostream&gt;
+using namespace std;
+
+// How many times to do gets.
+const int GETS_COUNT = 10000;
+
+/**
+ * Test function: Insert new nodes at the beginning of the data vector.
+ *                The final node data values are 0, 1, 2, ..., size-1.
+ * @param sv the vector test subject.
+ * @param size the data size of the vector.
+ */
+void vector_prepends(SortedVector&amp; sv, const int size)
+{
+    for(int i = 0; i &lt; size; i++)
+    	sv.prepend(i);
+
+}
+
+/**
+ * Test function: Insert new nodes at the beginning of the data list.
+ *                The final node data values are 0, 1, 2, ..., size-1.
+ * @param sl the linked list test subject.
+ * @param size the data size of the linked list.
+ */
+void list_prepends(SortedList&amp; sl, const int size)
+{
+    /***** Complete this function. *****/
+	 for(int i = 0; i &lt; size; i++)
+	    	sl.prepend(i);
+}
+
+/**
+ * Test function: Append new nodes at the end of the data vector.
+ *                The final node data values are 0, 1, 2, ..., size-1.
+ * @param sv the vector test subject.
+ * @param size the data size of the vector.
+ */
+void vector_appends(SortedVector&amp; sv, const int size)
+{
+    for(int i = 0; i &lt; size; i++)
+    	sv.append(i);
+}
+
+/**
+ * Test function: Append new nodes at the end of the data list.
+ *                The final node data values are 0, 1, 2, ..., size-1.
+ * @param sl the linked list test subject.
+ * @param size the data size of the linked list.
+ */
+void list_appends(SortedList&amp; sl, const int size)
+{
+    /***** Complete this function. *****/
+	for(int i = 0; i &lt; size; i++)
+	    	sl.append(i);
+}
+
+/**
+ * Test function: Access nodes in the data vector.
+ * @param sv the vector test subject.
+ * @param size the data size of the vector.
+ * @throw an exception if anything goes wrong.
+ */
+void vector_gets(SortedVector&amp; sv, const int size) throw (string)
+{
+    // First fill the vector data.
+    vector_appends(sv, size);
+    Node::reset();
+    srand (time(NULL));
+    // Loop to access nodes at random positions.
+    for (int i = 0; i &lt; GETS_COUNT; i++)
+    {
+        int index = rand() % size;
+       // Node random_node(sv.at(index));
+        long value = sv.at(index).get_value();
+       // cout &lt;&lt; index &lt;&lt; " " &lt;&lt; value &lt;&lt; endl ;
+        // Make sure we got the correct node.
+        if (index != value) throw string("Vector data mismatch!");
+    }
+}
+
+/**
+ * Test function: Access nodes in the data list.
+ * @param sl the linked list test subject.
+ * @param size the data size of the linked list.
+ * @throw an exception if anything goes wrong.
+ */
+void list_gets(SortedList&amp; sl, const int size) throw (string)
+{
+    // First fill the list data.
+    list_appends(sl, size);
+    Node::reset();
+    srand (time(NULL));
+    // Loop to access nodes at random positions.
+    for (int i = 0; i &lt; GETS_COUNT; i++)
+    {
+        int index = rand() % size;
+        Node random_node = sl.at(index);
+        long value = random_node.get_value();
+       // cout &lt;&lt; index &lt;&lt; value &lt;&lt; endl;
+        /***** Complete this function. *****/
+
+        // Make sure we got the correct node.
+        if (index != value) throw string("List data mismatch!");
+    }
+}
+
+/**
+ * Test function: Remove all the nodes from the data vector
+ *                one at a time.
+ * @param sv the vector test subject.
+ * @param size the data size of the vector.
+ */
+void vector_removes(SortedVector&amp; sv, const int size)
+{
+    // First fill the vector data.
+    vector_appends(sv, size);
+    Node::reset();
+    srand (time(NULL));
+    // Loop to remove a node at a random position
+    // one at a time until the nodes are all gone.
+    while (sv.size() &gt; 0)
+    {
+        int index = rand() % sv.size();
+        sv.remove(index);
+    }
+}
+
+/**
+ * Test function: Remove all the nodes from the data list
+ *                one at a time.
+ * @param sl the linked list test subject.
+ * @param size the data size of the linked list.
+ */
+void list_removes(SortedList&amp; sl, const int size)
+{
+    // First fill the list data.
+    list_appends(sl, size);
+    Node::reset();
+    srand (time(NULL));
+    while (sl.size() &gt; 0)
+    {
+        int index = rand() % sl.size();
+        sl.remove(index);
+
+        /***** Complete this function. *****/
+    }
+}
+
+/**
+ * Test function: Insert random values into the sorted data vector.
+ * @param sv the vector test subject.
+ * @param size the data size of the vector.
+ */
+void vector_inserts(SortedVector&amp; sv, const int size)
+{
+	srand (time(NULL));
+    while (sv.size() &lt; size)
+	{
+    	long value = rand() % size;
+    	sv.insert(value);
+	}
+}
+
+/**
+ * Test function: Insert random values into the sorted data list.
+ * @param sl the linked list test subject.
+ * @param size the data size of the linked list.
+ */
+void list_inserts(SortedList&amp; sl, const int size)
+{
+	srand (time(NULL));
+	while (sl.size() &lt; size)
+	{
+		long value = rand() % size;
+		sl.insert(value);
+	}
+
+
+
+}
+
+
+</pre>
+<p class="header providedFiles">Provided files</p>
+<p class="caption">STLVectorList.cpp:</p>
+<pre>//SAMPLE
+
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;string&gt;
+#include &lt;ctime&gt;
+#include &lt;chrono&gt;
+#include "SortedVector.h"
+#include "SortedList.h"
+#include "Node.h"
+
+using namespace std;
+using namespace std::chrono;
+
+void run_test_suite() throw (string);
+void run_test_functions(const string test_name,
+                        void fv(SortedVector&amp; sv, const int size),
+                        void fl(SortedList&amp; sl,   const int size))
+    throw (string);
+
+long timed_test(SortedVector&amp; sv, const int size,
+                void f(SortedVector&amp; sv, const int size)) throw (string);
+long timed_test(SortedList&amp; sl, const int size,
+                void f(SortedList&amp; sl, const int size)) throw (string);
+
+string commafy(const long n);
+
+void vector_prepends(SortedVector&amp; sv, const int size);
+void list_prepends  (SortedList&amp;   sl, const int size);
+
+void vector_appends (SortedVector&amp; sv, const int size);
+void list_appends   (SortedList&amp;   sl, const int size);
+
+void vector_gets    (SortedVector&amp; sv, const int size) throw (string);
+void list_gets      (SortedList&amp;   sl, const int size) throw (string);
+
+void vector_removes (SortedVector&amp; sv, const int size);
+void list_removes   (SortedList&amp;   sl, const int size);
+
+void vector_inserts (SortedVector&amp; sv, const int size);
+void list_inserts   (SortedList&amp;   sl, const int size);
+
+// Vector and list sizes.
+const int SIZES[] = {100, 500, 1000, 5000, 10000};
+// Add size 50000 outside of CodeCheck.
+
+/**
+ * The main.
+ */
+int main()
+{
+    srand(time(NULL));
+
+    // The overall starting time.
+    steady_clock::time_point start_time = steady_clock::now();
+
+    // Run the test suite. Catch any exceptions.
+    try
+    {
+        run_test_suite();
+    }
+    catch (string&amp; msg)
+    {
+        cout &lt;&lt; endl &lt;&lt; "***** " &lt;&lt; msg &lt;&lt; endl;
+        cout.flush();
+        return -1;
+    }
+
+    // Compute and print the overall elapsed time.
+    steady_clock::time_point end_time = steady_clock::now();
+    duration&lt;double&gt; elapsed_time = duration_cast&lt;duration&lt;double&gt;&gt;(end_time - start_time);
+    cout &lt;&lt; "Done! Total time: " &lt;&lt; elapsed_time.count() &lt;&lt; " seconds" &lt;&lt; endl;
+
+    return 0;
+}
+
+/**
+ * Run the test suite.
+ * @throw an exception if anything goes wrong.
+ */
+void run_test_suite() throw (string)
+{
+    run_test_functions("Prepend", vector_prepends, list_prepends);
+    run_test_functions("Append",  vector_appends,  list_appends);
+    run_test_functions("Get",     vector_gets,     list_gets);
+    run_test_functions("Remove",  vector_removes,  list_removes);
+    run_test_functions("Insert",  vector_inserts,  list_inserts);
+}
+
+/**
+ * Run and time a pair of vector and linked list test functions.
+ * @param test_name the name of the test pair.
+ * @param fv the vector function.
+ * @param fl the linked list function.
+ * @throw an exception if anything goes wrong.
+ */
+void run_test_functions(const string test_name,
+                        void fv(SortedVector&amp; sv, const int size),
+                        void fl(SortedList&amp; sl, const int size))
+    throw (string)
+{
+    // Print a nice header for the test pair.
+    for (int i = 0; i &lt; test_name.length(); i++) cout &lt;&lt; "=";
+    cout &lt;&lt; endl &lt;&lt; test_name &lt;&lt; endl;
+    for (int i = 0; i &lt; test_name.length(); i++) cout &lt;&lt; "=";
+    cout &lt;&lt; endl;
+    cout &lt;&lt; "          |---------------Vector-------------|";
+    cout &lt;&lt;        "   |-----------------List-------------|" &lt;&lt; endl;
+    cout &lt;&lt; "   Size        Time  Creates   Copies Destroys";
+    cout &lt;&lt;        "        Time  Creates   Copies Destroys" &lt;&lt; endl;
+
+    // Loop over the data sizes for the tests.
+    for (int size : SIZES)
+    {
+        cout &lt;&lt; setw(7) &lt;&lt; commafy(size);
+
+        // Run and time the vector test and print its statistics.
+        SortedVector sv;
+        long etv = timed_test(sv, size, fv);
+        cout &lt;&lt; setw(9) &lt;&lt; commafy(etv) &lt;&lt; " ms";
+        cout &lt;&lt; setw(9) &lt;&lt; commafy(Node::get_constructor_count());
+        cout &lt;&lt; setw(9) &lt;&lt; commafy(Node::get_copy_count());
+        cout &lt;&lt; setw(9) &lt;&lt; commafy(Node::get_destructor_count());
+        cout.flush();
+
+        // Make sure the test didn't ruin the sort order.
+        if (!sv.check()) throw string("Vector sort error!");
+
+        // Run and time the linked list test and print its statistics.
+        SortedList sl;
+        long etl = timed_test(sl, size, fl);
+        cout &lt;&lt; setw(9) &lt;&lt; commafy(etl) &lt;&lt; " ms";
+        cout &lt;&lt; setw(9) &lt;&lt; commafy(Node::get_constructor_count());
+        cout &lt;&lt; setw(9) &lt;&lt; commafy(Node::get_copy_count());
+        cout &lt;&lt; setw(9) &lt;&lt; commafy(Node::get_destructor_count());
+        cout &lt;&lt; endl;
+
+        // Make sure the test didn't ruin the sort order.
+        if (!sl.check()) throw string("List sort error!");
+    }
+
+    cout &lt;&lt; endl;
+}
+
+/**
+ * Run and time a vector test function.
+ * @param sv the sorted vector test subject.
+ * @param size the data size of the vector.
+ * @param f the test function.
+ * @return the elapsed time in milliseconds.
+ * @throw an exception if anything goes wrong.
+ */
+long timed_test(SortedVector&amp; sv, const int size,
+                void f(SortedVector&amp; sv, const int size)) throw (string)
+{
+    // Starting time.
+    steady_clock::time_point start_time = steady_clock::now();
+
+    // Run the test.
+    f(sv, size);
+
+    // Compute and return the elpased time in milliseconds.
+    steady_clock::time_point end_time = steady_clock::now();
+    return duration_cast&lt;milliseconds&gt;(end_time - start_time).count();
+}
+
+/**
+ * Run and time a linked list test function.
+ * @param sl the sorted linked list test subject.
+ * @param size the data size of the linked list.
+ * @param f the test function.
+ * @return the elapsed time in milliseconds.
+ * @throw an exception if anything goes wrong.
+ */
+long timed_test(SortedList&amp; sl, const int size,
+                void f(SortedList&amp; sl, const int size)) throw (string)
+{
+    // Starting time.
+    steady_clock::time_point start_time = steady_clock::now();
+
+    // Run the test.
+    f(sl, size);
+
+    // Compute and return the elpased time in milliseconds.
+    steady_clock::time_point end_time = steady_clock::now();
+    return duration_cast&lt;milliseconds&gt;(end_time - start_time).count();
+}
+
+/**
+ * Convert a number to a string with commas.
+ * @param n the number.
+ */
+string commafy(const long n)
+{
+    string str = to_string(n);
+    int pos = str.length() - 3;
+
+    while (pos &gt; 0)
+    {
+        str.insert(pos, ",");
+        pos -= 3;
+    }
+
+    return str;
+}
+</pre>
+<p class="header score">Score</p>
+<p class="score">0</p>
+<p class="download"><a href="Node.signed.zip">Download</a></p>
+<div class="footnotes"><div class="footnote">2017-04-06T08:09:58Z</div>
+</div>
+</body></html>
